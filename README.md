@@ -69,7 +69,7 @@ Neither of these are too hard to fix, I just didn't need to do it for my own use
     Saving 30 followers to redis
     ```
     That proves the connections to Redis and Twitter are working.
-1. Run `node src/index.js`. Output should look like this
+1. Run `node src/test-notification.js`. Output should look like this
 
     ```
     $ node src/test-notification.js
