@@ -1,6 +1,6 @@
 # Unfollowers
 
-A script that downloads all your Twitter followers and notifies you about who unfollowed.
+A script that downloads all your Twitter followers, compares the current list of followers to the list from the previous run, and notifies you of any unfollowers through IFTTT. It is meant to be run on Heroku, but could be modified to run anywhere.
 
 ![unfollow copy](https://user-images.githubusercontent.com/3612203/29853439-92e3a45a-8d05-11e7-991a-8e28732a17d5.jpg)
 
@@ -40,7 +40,7 @@ Neither of these are too hard to fix, I just didn't need to do it for my own use
     | `TW_CONSUMER_SECRET` | Consumer Secret (API Secret) |
     | `TW_TOKEN` | Access Token |
     | `TW_SECRET` | Access Token Secret  |
-    
+
     `REDIS_URL` is automatically set by the Redis plugin.
 1. Deploy to Heroku with `git push heroku master`
 1. Click Heroku Scheduler on the overview page and add a new job that runs `node src/index.js` every 10 minutes (or hourly, or daily)
