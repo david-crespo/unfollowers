@@ -7,7 +7,7 @@ A script that downloads all your Twitter followers, compares the current list of
 ### Limitations
 
 * Only looks at your first 5000 followers
-* If more than 3 people unfollowed you, you will only see the first 3
+* If more than 10 people unfollowed you, you will only see the first 10
 
 Neither of these are too hard to fix, I just didn't need to do it for my own use case.
 
