@@ -50,6 +50,7 @@ Neither of these are too hard to fix, I just didn't need to do it for my own use
 1. Install Node if you don't have it (I've only tested this with Node 8.4.0)
 1. Run `npm i` in the repo directory
 1. Set all of the above environment variables locally, including `REDIS_URL`. The easiest way to do that is to make a file called `.env` that looks like this
+
     ```
     export IFTTT_KEY=xxxxxxxxxxxx
     export TW_CONSUMER_KEY=xxxxxxxxxxxx
@@ -60,6 +61,7 @@ Neither of these are too hard to fix, I just didn't need to do it for my own use
     ```
     and run it with `source .env`.
 1. Run `node src/index.js`. Output should look like this:
+
     ```
     $ node src/index.js
     Found 300 followers (previously 0)
@@ -68,6 +70,7 @@ Neither of these are too hard to fix, I just didn't need to do it for my own use
     ```
     That proves the connections to Redis and Twitter are working.
 1. Run `node src/index.js`. Output should look like this
+
     ```
     $ node src/test-notification.js
     Posted to IFTTT: "This is a test notification!"
