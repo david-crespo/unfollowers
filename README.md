@@ -2,6 +2,8 @@
 
 A script that downloads all your Twitter followers and notifies you about who unfollowed.
 
+![unfollow copy](https://user-images.githubusercontent.com/3612203/29853439-92e3a45a-8d05-11e7-991a-8e28732a17d5.jpg)
+
 ### Limitations
 
 * Only looks at your first 5000 followers
