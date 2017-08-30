@@ -66,9 +66,9 @@ Neither of these are too hard to fix, I just didn't need to do it for my own use
 
     ```
     $ node src/index.js
-    Found 300 followers (previously 0)
+    Found N followers (previously 0)
     Found 0 unfollowers
-    Saving 30 followers to redis
+    Saving N followers to redis
     ```
     That proves the connections to Redis and Twitter are working.
 1. Run `node src/test-notification.js`. Output should look like this
