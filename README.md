@@ -7,9 +7,9 @@ A script that downloads all your Twitter followers, compares the current list of
 ### Limitations
 
 * Only looks at your first 5000 followers
-* If more than 10 people unfollowed you, you will only see the first 10
+* If more than 100 people unfollowed you, you will only see the first 100
 
-Neither of these are too hard to fix, I just didn't need to do it for my own use case.
+Both of these are because I didn't need to implement paging for my own small number of followers.
 
 ## How to host with Heroku and IFTTT
 

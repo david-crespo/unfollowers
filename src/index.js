@@ -10,13 +10,6 @@ const commaSeries = require('./utils').commaSeries;
 
 const redisClient = redisHelpers.createClient();
 
-const calcUnfollowers = (followers, oldFollowers) => {
-  const followersSet = new Set(followers);
-  const unfollowerIDs = oldFollowers.filter(f => !followersSet.has(f));
-  console.log(`Found ${unfollowerIDs.length} unfollowers`);
-  return unfollowerIDs.slice(0, 10); // if there are a lot, only take 10
-}
-
 Promise.all([twitter.fetchFollowers(), redisHelpers.retrieveOldFollowers(redisClient)])
   .then(([followers, oldFollowers]) => {
     if (followers && followers.errors) {  // usually rate limiting
@@ -27,9 +20,14 @@ Promise.all([twitter.fetchFollowers(), redisHelpers.retrieveOldFollowers(redisCl
 
     if (followers && followers.length && oldFollowers && oldFollowers.length) {
       console.log(`Found ${followers.length} followers (previously ${oldFollowers.length})`);
-      const unfollowerIDs = calcUnfollowers(followers, oldFollowers);
+
+      const followersSet = new Set(followers);
+      const unfollowerIDs = oldFollowers.filter(f => !followersSet.has(f));
+      console.log(`Found ${unfollowerIDs.length} unfollowers`);
+
       if (unfollowerIDs.length) {
-        return twitter.lookup(unfollowerIDs)
+        const first100 = unfollowerIDs.slice(0, 100); // twitter has max 100 lookup
+        return twitter.lookup(first100)
           .then(unfollowers => commaSeries(unfollowers.map(u => `${u.name} (@${u.screen_name})`)))
           .then(screenNamesStr => sendNotification(`${screenNamesStr} unfollowed you.`))
           .then(() => redisHelpers.saveFollowers(redisClient)(followers));
