@@ -1,5 +1,5 @@
 #! /app/.heroku/node/bin/node
-"use strict";
+'use strict';
 
 const commaSeries = list => {
   if (!list || list.length == 0) {
