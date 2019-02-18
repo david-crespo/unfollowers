@@ -1,7 +1,6 @@
 #! /app/.heroku/node/bin/node
 "use strict";
 
-const Promise = require("bluebird");
 const Twit = require('twit');
 
 var T = new Twit({

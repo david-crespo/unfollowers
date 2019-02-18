@@ -30,7 +30,7 @@ Promise.all([twitter.fetchFollowers(), redisHelpers.retrieveOldFollowers(redisCl
         return twitter.lookup(first100)
           .then(unfollowers => commaSeries(unfollowers.map(u => `${u.name} (@${u.screen_name})`)))
           .then(screenNamesStr => sendNotification(`${screenNamesStr} unfollowed you.`))
-          .then(() => redisHelpers.saveFollowers(redisClient)(followers));
+          .finally(() => redisHelpers.saveFollowers(redisClient)(followers));
       }
     }
 
