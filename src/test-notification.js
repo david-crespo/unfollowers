@@ -1,3 +1,3 @@
-const sendNotification = require('./notification').send;
+import { send as sendNotification } from "./notification.js";
 
-sendNotification('This is a test notification!');
+sendNotification("This is a test notification!");

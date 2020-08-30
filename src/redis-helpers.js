@@ -1,26 +1,21 @@
 #! /app/.heroku/node/bin/node
-'use strict';
+"use strict";
 
-const Promise = require('bluebird');
-const redis = require('redis');
-Promise.promisifyAll(redis.RedisClient.prototype);
+import redis from "redis";
+import { promisify } from "util";
 
-const FOLLOWERS_KEY = 'followers';
+const FOLLOWERS_KEY = "followers";
 
-const createClient = () => redis.createClient(process.env.REDIS_URL);
+const client = redis.createClient(process.env.REDIS_URL);
+const getAsync = promisify(client.get).bind(client);
+const setAsync = promisify(client.set).bind(client);
 
-const retrieveOldFollowers = client =>
-  client
-    .getAsync(FOLLOWERS_KEY)
-    .then(result => (result ? result.split(',') : null));
+export const retrieveOldFollowers = () =>
+  getAsync(FOLLOWERS_KEY).then((result) => (result ? result.split(",") : null));
 
-const saveFollowers = client => (followerIDs = []) => {
+export const saveFollowers = (followerIDs = []) => {
   console.log(`Saving ${followerIDs.length} followers to redis`);
-  return client.setAsync(FOLLOWERS_KEY, followerIDs.join(','));
+  return setAsync(FOLLOWERS_KEY, followerIDs.join(","));
 };
 
-module.exports = {
-  createClient,
-  retrieveOldFollowers,
-  saveFollowers
-};
+export const quit = () => client.quit();
