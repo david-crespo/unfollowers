@@ -8,9 +8,9 @@
   "author": "David Crespo",
   "license": "MIT",
   "dependencies": {
-    "bluebird": "^3.5.0",
+    "bluebird": "^3.7.2",
     "redis": "^2.8.0",
-    "request": "^2.88.0",
+    "request": "^2.88.2",
     "twit": "^2.2.11"
   },
   "engines": {
