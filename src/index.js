@@ -12,7 +12,7 @@ async function checkUnfollowers() {
     followers = await twitter.fetchFollowers();
     oldFollowers = await redisHelpers.retrieveOldFollowers();
   } catch {
-    redisHelpers.quit();
+    await redisHelpers.quit();
     return;
   }
 
@@ -36,4 +36,8 @@ async function checkUnfollowers() {
   }
 }
 
-checkUnfollowers();
+try {
+  checkUnfollowers();
+} catch (e) {
+  console.log("Uncaught error: ", e);
+}

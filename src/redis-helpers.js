@@ -12,9 +12,10 @@ const setAsync = promisify(client.set).bind(client);
 const quitAsync = promisify(client.quit).bind(client);
 
 export const retrieveOldFollowers = () =>
-  getAsync(FOLLOWERS_KEY).then((result) =>
-    result ? new Set(result.split(",")) : null,
-  );
+  getAsync(FOLLOWERS_KEY).then((result) => {
+    console.log({ result });
+    return result ? result.split(",") : null;
+  });
 
 export const saveFollowers = (followerIDs = []) => {
   console.log(`Saving ${followerIDs.length} followers to redis`);
