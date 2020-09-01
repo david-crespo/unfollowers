@@ -17,7 +17,7 @@ Promise.all([twitter.fetchFollowers(), redisHelpers.retrieveOldFollowers()])
 
     if (followers && followers.length && oldFollowers && oldFollowers.length) {
       console.log(
-        `Found ${followers.length} followers (previously ${oldFollowers.length})`
+        `Found ${followers.length} followers (previously ${oldFollowers.length})`,
       );
 
       const followersSet = new Set(followers);
@@ -30,11 +30,11 @@ Promise.all([twitter.fetchFollowers(), redisHelpers.retrieveOldFollowers()])
           .lookup(first100)
           .then((unfollowers) => {
             const screenNamesStr = commaSeries(
-              unfollowers.map((u) => `${u.name} (@${u.screen_name})`)
+              unfollowers.map((u) => `${u.name} (@${u.screen_name})`),
             );
             sendNotification(`${screenNamesStr} unfollowed you.`);
           })
-          .finally(() => redisHelpers.saveFollowers(redisClient)(followers));
+          .finally(() => redisHelpers.saveFollowers(followers));
       }
     }
 
