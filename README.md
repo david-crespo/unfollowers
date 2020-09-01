@@ -6,8 +6,8 @@ A script that downloads all your Twitter followers, compares the current list of
 
 ### Limitations
 
-* Only looks at your first 5000 followers
-* If more than 100 people unfollowed you, you will only see the first 100
+- Only looks at your first 5000 followers
+- If more than 100 people unfollowed you, you will only see the first 100
 
 Both of these are because I didn't need to implement paging for my own small number of followers.
 
@@ -33,18 +33,18 @@ Both of these are because I didn't need to implement paging for my own small num
 1. Clone this repo and add your Heroku app as a remote with `heroku git:remote -a <heroku_app_name>`
 1. Manually set the following config variables in Heroku, under **Settings**:
 
-    | Key  | Description |
-    | ------------- | ------------- |
-    | `IFTTT_KEY` | The key from the IFTTT Webhooks URL |
-    | `TW_CONSUMER_KEY` | Consumer Key (API Key) |
-    | `TW_CONSUMER_SECRET` | Consumer Secret (API Secret) |
-    | `TW_TOKEN` | Access Token |
-    | `TW_SECRET` | Access Token Secret  |
+   | Key                  | Description                         |
+   | -------------------- | ----------------------------------- |
+   | `IFTTT_KEY`          | The key from the IFTTT Webhooks URL |
+   | `TW_CONSUMER_KEY`    | Consumer Key (API Key)              |
+   | `TW_CONSUMER_SECRET` | Consumer Secret (API Secret)        |
+   | `TW_TOKEN`           | Access Token                        |
+   | `TW_SECRET`          | Access Token Secret                 |
 
-    `REDIS_URL` is automatically set by the Redis plugin.
+   `REDIS_URL` is automatically set by the Redis plugin.
+
 1. Deploy to Heroku with `git push heroku master`
 1. Click Heroku Scheduler on the overview page and add a new job that runs `node src/index.js` every 10 minutes (or hourly, or daily)
-
 
 ## Running it locally first to test that it works
 
@@ -53,28 +53,34 @@ Both of these are because I didn't need to implement paging for my own small num
 1. Run `npm i` in the repo directory
 1. Set all of the above environment variables locally, including `REDIS_URL`. The easiest way to do that is to make a file called `.env` that looks like this
 
-    ```
-    export IFTTT_KEY=xxxxxxxxxxxx
-    export TW_CONSUMER_KEY=xxxxxxxxxxxx
-    export TW_CONSUMER_SECRET=xxxxxxxxxxxx
-    export TW_TOKEN=xxxxxxxxxxxx
-    export TW_SECRET=xxxxxxxxxxxx
-    export REDIS_URL=xxxxxxxxxxxx
-    ```
-    and run it with `source .env`.
+   ```
+   export IFTTT_KEY=xxxxxxxxxxxx
+   export TW_CONSUMER_KEY=xxxxxxxxxxxx
+   export TW_CONSUMER_SECRET=xxxxxxxxxxxx
+   export TW_TOKEN=xxxxxxxxxxxx
+   export TW_SECRET=xxxxxxxxxxxx
+   export REDIS_URL=xxxxxxxxxxxx
+   ```
+
+   and run it with `source .env`.
+
 1. Run `node src/index.js`. Output should look like this:
 
-    ```
-    $ node src/index.js
-    Found N followers (previously 0)
-    Found 0 unfollowers
-    Saving N followers to redis
-    ```
-    That proves the connections to Redis and Twitter are working.
+   ```
+   $ node src/index.js
+   Current followers: <curr>
+   Previous followers: <prev>
+   Saving <curr> followers to redis
+   Found <prev - curr> unfollowers
+   ```
+
+   That proves the connections to Redis and Twitter are working.
+
 1. Run `node src/test-notification.js`. Output should look like this
 
-    ```
-    $ node src/test-notification.js
-    Posted to IFTTT: "This is a test notification!"
-    ```
-    and you should get a notification on your phone.
+   ```
+   $ node src/test-notification.js
+   Posted to IFTTT: "This is a test notification!"
+   ```
+
+   and you should get a notification on your phone.
