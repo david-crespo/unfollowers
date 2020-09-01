@@ -1,0 +1,34 @@
+service: unfollowers
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  region: us-east-2
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - s3:GetObject
+        - s3:GetObjectAcl
+        - s3:PutObject
+        - s3:PutObjectAcl
+      Resource: "arn:aws:s3:::${env:S3_BUCKET}/*"
+
+functions:
+  checkUnfollowers:
+    handler: handler.run
+    events:
+      - schedule: rate(10 minutes)
+    environment:
+      BUCKET: "${env:S3_BUCKET}"
+      IFTTT_KEY: ${env:IFTTT_KEY}
+      TW_CONSUMER_KEY: ${env:TW_CONSUMER_KEY}
+      TW_CONSUMER_SECRET: ${env:TW_CONSUMER_SECRET}
+      TW_TOKEN: ${env:TW_TOKEN}
+      TW_SECRET: ${env:TW_SECRET}
+
+resources:
+  Resources:
+    S3Bucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${env:S3_BUCKET}

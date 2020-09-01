@@ -1,7 +1,7 @@
 #! /app/.heroku/node/bin/node
 "use strict";
 
-import Twit from "twit";
+const Twit = require("twit");
 
 var T = new Twit({
   consumer_key: process.env.TW_CONSUMER_KEY,
@@ -11,7 +11,7 @@ var T = new Twit({
   timeout_ms: 30 * 1000,
 });
 
-export const fetchFollowers = () =>
+const fetchFollowers = () =>
   T.get("followers/ids", { stringify_ids: true })
     .then((r) => {
       if (r.errors) {
@@ -25,7 +25,9 @@ export const fetchFollowers = () =>
       console.log(err);
     });
 
-export const lookup = (ids) =>
+const lookup = (ids) =>
   T.get("users/lookup", { user_id: ids.join(",") })
     .then((r) => r.data)
     .catch((e) => console.log("Error looking up follower details: ", e));
+
+module.exports = { fetchFollowers, lookup };

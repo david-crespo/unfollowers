@@ -1,11 +1,11 @@
 #! /app/.heroku/node/bin/node
 "use strict";
 
-import request from "request";
+const request = require("request");
 
 const notificationURL = `https://maker.ifttt.com/trigger/new_unfollowers/with/key/${process.env.IFTTT_KEY}`;
 
-export function send(msg) {
+function send(msg) {
   request(
     {
       url: notificationURL,
@@ -23,3 +23,5 @@ export function send(msg) {
     },
   );
 }
+
+module.exports = { send };

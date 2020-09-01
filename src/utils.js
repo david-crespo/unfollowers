@@ -1,7 +1,7 @@
 #! /app/.heroku/node/bin/node
 "use strict";
 
-export const commaSeries = (list) => {
+const commaSeries = (list) => {
   if (!list || list.length == 0) {
     return "<empty>";
   } else if (list.length === 1) {
@@ -15,7 +15,9 @@ export const commaSeries = (list) => {
   }
 };
 
-export const setDiff = (a, b) => {
+const setDiff = (a, b) => {
   const setB = new Set([...b]);
   return [...a].filter((item) => !setB.has(item));
 };
+
+module.exports = { commaSeries, setDiff };

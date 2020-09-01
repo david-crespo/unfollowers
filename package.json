@@ -2,14 +2,15 @@
   "name": "unfollowers",
   "version": "0.0.1",
   "description": "Fetch followers and see who unfollowed.",
-  "type": "module",
   "scripts": {
-    "start": "echo \"Nothing to run!\" && exit"
+    "deploy": "source .env && serverless deploy",
+    "logs": "serverless logs -f checkUnfollowers",
+    "logs:tail": "serverless logs -f checkUnfollowers -t"
   },
   "author": "David Crespo",
   "license": "MIT",
   "dependencies": {
-    "redis": "^3.0.0",
+    "aws-sdk": "^2.743.0",
     "request": "^2.88.2",
     "twit": "^2.2.11"
   },
