@@ -7,19 +7,23 @@ import { promisify } from "util";
 const FOLLOWERS_KEY = "followers";
 
 const client = redis.createClient(process.env.REDIS_URL);
-const getAsync = promisify(client.get).bind(client);
-const setAsync = promisify(client.set).bind(client);
-const quitAsync = promisify(client.quit).bind(client);
 
-export const retrieveOldFollowers = () =>
-  getAsync(FOLLOWERS_KEY).then((result) => {
-    console.log({ result });
-    return result ? result.split(",") : null;
-  });
+const get = promisify(client.get).bind(client);
+const set = promisify(client.set).bind(client);
+export const quit = promisify(client.quit).bind(client);
 
-export const saveFollowers = (followerIDs = []) => {
+export const getFollowers = () =>
+  get(FOLLOWERS_KEY)
+    .then((result) => {
+      const followers = result ? result.split(",") : null;
+      console.log(`Previous followers: ${followers && followers.length}`);
+      return followers;
+    })
+    .catch((e) => console.log("Error retrieving followers from redis:", e));
+
+export const setFollowers = (followerIDs = []) => {
   console.log(`Saving ${followerIDs.length} followers to redis`);
-  return setAsync(FOLLOWERS_KEY, followerIDs.join(","));
+  return set(FOLLOWERS_KEY, followerIDs.join(",")).catch((e) =>
+    console.log("Error saving followers in redis:", e),
+  );
 };
-
-export const quit = () => quitAsync();

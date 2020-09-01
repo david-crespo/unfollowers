@@ -17,6 +17,7 @@ export const fetchFollowers = () =>
       if (r.errors) {
         throw Error(r.errors.map((e) => e.message).join("\n"));
       }
+      console.log(`Current followers: ${r.data.ids && r.data.ids.length}`);
       return r.data.ids;
     })
     .catch((err) => {
@@ -25,4 +26,6 @@ export const fetchFollowers = () =>
     });
 
 export const lookup = (ids) =>
-  T.get("users/lookup", { user_id: ids.join(",") }).then((r) => r.data);
+  T.get("users/lookup", { user_id: ids.join(",") })
+    .then((r) => r.data)
+    .catch((e) => console.log("Error looking up follower details: ", e));
