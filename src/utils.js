@@ -14,3 +14,8 @@ export const commaSeries = (list) => {
     return `${allButLast}, and ${last}`;
   }
 };
+
+export const setDiff = (a, b) => {
+  const setB = new Set([...b]);
+  return [...a].filter((item) => !setB.has(item));
+};

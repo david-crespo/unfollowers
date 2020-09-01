@@ -13,8 +13,16 @@ var T = new Twit({
 
 export const fetchFollowers = () =>
   T.get("followers/ids", { stringify_ids: true })
-    .then((r) => r.data.ids)
-    .catch((err) => console.log(err));
+    .then((r) => {
+      if (r.errors) {
+        throw Error(r.errors.map((e) => e.message).join("\n"));
+      }
+      return r.data.ids;
+    })
+    .catch((err) => {
+      console.log("Error fetching followers:");
+      console.log(err);
+    });
 
 export const lookup = (ids) =>
   T.get("users/lookup", { user_id: ids.join(",") }).then((r) => r.data);

@@ -4,41 +4,36 @@
 import * as redisHelpers from "./redis-helpers.js";
 import * as twitter from "./twitter.js";
 import { send as sendNotification } from "./notification.js";
-import { commaSeries } from "./utils.js";
+import { commaSeries, setDiff } from "./utils.js";
 
-Promise.all([twitter.fetchFollowers(), redisHelpers.retrieveOldFollowers()])
-  .then(([followers, oldFollowers]) => {
-    if (followers && followers.errors) {
-      // usually rate limiting
-      console.log("Error fetching followers:");
-      console.log(followers.errors.map((e) => e.message).join("\n"));
-      return;
-    }
+async function checkUnfollowers() {
+  let followers, oldFollowers;
+  try {
+    followers = await twitter.fetchFollowers();
+    oldFollowers = await redisHelpers.retrieveOldFollowers();
+  } catch {
+    redisHelpers.quit();
+    return;
+  }
 
-    if (followers && followers.length && oldFollowers && oldFollowers.length) {
-      console.log(
-        `Found ${followers.length} followers (previously ${oldFollowers.length})`,
-      );
+  if (followers && followers.length) {
+    await redisHelpers.saveFollowers(followers);
+    await redisHelpers.quit();
+  }
 
-      const followersSet = new Set(followers);
-      const unfollowerIDs = oldFollowers.filter((f) => !followersSet.has(f));
-      console.log(`Found ${unfollowerIDs.length} unfollowers`);
+  console.log(
+    `Found ${followers.length} followers (previously ${oldFollowers.length})`,
+  );
 
-      if (unfollowerIDs.length) {
-        const first100 = unfollowerIDs.slice(0, 100); // twitter has max 100 lookup
-        return twitter
-          .lookup(first100)
-          .then((unfollowers) => {
-            const screenNamesStr = commaSeries(
-              unfollowers.map((u) => `${u.name} (@${u.screen_name})`),
-            );
-            sendNotification(`${screenNamesStr} unfollowed you.`);
-          })
-          .finally(() => redisHelpers.saveFollowers(followers));
-      }
-    }
+  const unfollowers = setDiff(oldFollowers, followers);
+  console.log(`Found ${unfollowers.length} unfollowers`);
 
-    return redisHelpers.saveFollowers(followers);
-  })
-  .catch((err) => console.log(err))
-  .finally(() => redisHelpers.quit());
+  if (unfollowers.length > 0) {
+    const data = await twitter.lookup(unfollowers.slice(0, 100)); // twitter has max 100 lookup
+    const screenNames = data.map((u) => `${u.name} (@${u.screen_name})`);
+    const msg = commaSeries(screenNames);
+    sendNotification(`${msg} unfollowed you.`);
+  }
+}
+
+checkUnfollowers();
