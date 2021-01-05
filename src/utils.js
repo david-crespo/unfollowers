@@ -1,4 +1,3 @@
-#! /app/.heroku/node/bin/node
 "use strict";
 
 const commaSeries = (list) => {

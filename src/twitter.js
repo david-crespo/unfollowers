@@ -1,4 +1,3 @@
-#! /app/.heroku/node/bin/node
 "use strict";
 
 const Twit = require("twit");
@@ -28,6 +27,13 @@ const fetchFollowers = () =>
 const lookup = (ids) =>
   T.get("users/lookup", { user_id: ids.join(",") })
     .then((r) => r.data)
-    .catch((e) => console.log("Error looking up follower details: ", e));
+    .catch((e) => {
+      if (e.code === 17) {
+        console.log(`404 for users [${ids.join(", ")}]`);
+      } else {
+        console.log("Error looking up follower details: ", e);
+      }
+      return [];
+    });
 
 module.exports = { fetchFollowers, lookup };

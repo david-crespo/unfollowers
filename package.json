@@ -11,7 +11,7 @@
   "license": "MIT",
   "dependencies": {
     "aws-sdk": "^2.743.0",
-    "request": "^2.88.2",
+    "node-fetch": "^2.6.1",
     "twit": "^2.2.11"
   },
   "engines": {

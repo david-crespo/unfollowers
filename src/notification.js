@@ -1,27 +1,21 @@
-#! /app/.heroku/node/bin/node
 "use strict";
 
-const request = require("request");
+const fetch = require("node-fetch");
 
 const notificationURL = `https://maker.ifttt.com/trigger/new_unfollowers/with/key/${process.env.IFTTT_KEY}`;
 
 function send(msg) {
-  request(
-    {
-      url: notificationURL,
-      method: "POST",
-      json: true,
-      body: { value1: msg },
-    },
-    function (err) {
-      if (err) {
-        console.log("Error posting to IFTTT:", err);
-        return;
-      }
-
+  fetch(notificationURL, {
+    method: "POST",
+    body: JSON.stringify({ value1: msg }),
+    headers: { "Content-Type": "application/json" },
+  })
+    .then(() => {
       console.log(`Posted to IFTTT: "${msg}"`);
-    },
-  );
+    })
+    .catch((err) => {
+      console.log("Error posting to IFTTT:", err);
+    });
 }
 
 module.exports = { send };

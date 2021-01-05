@@ -12,11 +12,20 @@ module.exports.run = async (event, context) => {
   await s3.setFollowers(currFollowers);
 
   const unfollowers = setDiff(prevFollowers, currFollowers);
-  console.log(`Found ${unfollowers.length} unfollowers`);
-
-  if (unfollowers.length > 0) {
+  if (unfollowers.length === 0) {
+    console.log("No unfollowers found");
+  } else {
+    console.log(
+      `Found ${unfollowers.length} unfollowers: [${unfollowers.join(", ")}]`,
+    );
     const data = await twitter.lookup(unfollowers.slice(0, 100)); // twitter has max 100 lookup
-    const screenNames = data.map((u) => `${u.name} (@${u.screen_name})`);
-    notification.send(`${commaSeries(screenNames)} unfollowed you.`);
+    if (data.length > 0) {
+      const screenNames = data.map((u) => `${u.name} (@${u.screen_name})`);
+      notification.send(`${commaSeries(screenNames)} unfollowed you.`);
+    } else {
+      notification.send(
+        `${unfollowers.length} of your followers no longer exist.`,
+      );
+    }
   }
 };

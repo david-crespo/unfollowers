@@ -95,6 +95,8 @@ You can then get the server logs from Lambda with
 serverless logs -f checkUnfollowers
 ```
 
+Add `--startTime 3d` to get more than the most recent run.
+
 Note that this command will error out until the function runs for the first time, which takes 10 minutes since it's on a 10 minute cron schedule. If there are errors connecting to Twitter, S3, or IFTTT, they will show up in the logs. When it's working it should look like this:
 
 ```
