@@ -4,7 +4,7 @@ const fetch = require("node-fetch");
 
 const notificationURL = `https://maker.ifttt.com/trigger/new_unfollowers/with/key/${process.env.IFTTT_KEY}`;
 
-function send(msg) {
+module.exports.send = async function (msg) {
   fetch(notificationURL, {
     method: "POST",
     body: JSON.stringify({ value1: msg }),
@@ -16,6 +16,4 @@ function send(msg) {
     .catch((err) => {
       console.log("Error posting to IFTTT:", err);
     });
-}
-
-module.exports = { send };
+};

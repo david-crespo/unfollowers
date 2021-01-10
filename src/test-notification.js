@@ -1,3 +1,7 @@
 const notification = require("./notification.js");
 
-notification.send("This is a test notification!");
+async function f() {
+  await notification.send("This is a test notification!");
+}
+
+f();
