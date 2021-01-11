@@ -5,6 +5,7 @@
   "scripts": {
     "deploy": "source .env && serverless deploy",
     "logs": "serverless logs -f checkUnfollowers",
+    "logs:1d": "serverless logs -f checkUnfollowers --startTime 1d",
     "logs:tail": "serverless logs -f checkUnfollowers -t"
   },
   "author": "David Crespo",
