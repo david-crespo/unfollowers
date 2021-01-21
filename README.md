@@ -1,10 +1,10 @@
 # Unfollow Notifier
 
-A script that notifies you of Twitter unfollowers. It runs on AWS Lambda through the [serverless](https://www.serverless.com/) framework, with notifications powered by IFTTT.
+A script that notifies you of Twitter unfollowers. It runs every 10 minutes on AWS Lambda, comparing the current follower list with a copy of the previous run's list persisted on S3. If you have lost followers, it will send a push notification through IFTTT. Lambda and S3 setup is made simple by the [serverless](https://www.serverless.com/) framework.
 
 ## Setup
 
-Clone this repo.
+Start by cloning this repo.
 
 ### Twitter
 
@@ -22,7 +22,7 @@ You need an API key in order to pull your followers list from Twitter.
 
 ### Environment variables
 
-This is necessary for the deploy. `serverless.yml` sets these environment variables so they're accessible to the Lambda function when it runs.
+This is necessary for the deploy. `serverless.yml` picks up these environment variables and makes them available to the Lambda function when it runs.
 
 Create a file `.env` in the project directory (it is already gitignored) with the following contents, using the keys from the above steps.
 
@@ -65,7 +65,7 @@ First three followers:
 
 Make an account on [AWS](https://aws.amazon.com/). Install serverless with `npm i -g serverless`. Then run `serverless deploy`, and it will lead you through a configuration wizard.
 
-Serverless is basically a wrapper around AWS CloudFormation, which for the purposes of deploying this app, it uses to set up Lambda function and S3 bucket, so it relies on AWS creds with permission to do those things. The first time you run `serverless deploy`, it will help you configure your AWS credentials. It will even take you to the AWS console to create a pre-filled user called `serverless`. The weird bit here is that you have to choose which permissions to give it, and the necessary permissions depend on your app. I went with these policies:
+Serverless is basically a wrapper around AWS CloudFormation, which in our case is used to set up a Lambda function and S3 bucket, so it relies on AWS creds with permission to do those things. The first time you run `serverless deploy`, it will help you configure your AWS credentials. It will even take you to the AWS console to create a pre-filled user called `serverless`. The weird bit here is that you have to choose which permissions to give it, and the necessary permissions depend on your app. I went with these policies:
 
 - `AWSLambdaFullAccess`
 - `AWSCloudFormationFullAccess`
